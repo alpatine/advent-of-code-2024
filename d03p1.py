@@ -9,7 +9,7 @@ def readDataFile() -> str:
 def parseData(data: str) -> list[str]:
     return re.findall('mul\\(\\d{1,3},\\d{1,3}\\)', data)
 
-def evaluate_mul_statement(statement):
+def evaluate_mul_statement(statement: str) -> int:
     return prod(map(int, re.findall('\d{1,3}', statement)))
 
 def d03p1(data: str) -> int:

@@ -11,7 +11,7 @@ def parseData(data: str) -> list[list[int]]:
         reports.append(list(map(int,line.split())))
     return reports
 
-def signum(a) -> int:
+def signum(a: int) -> int:
     if a > 0: return 1
     elif a < 0: return -1
     else: return 0

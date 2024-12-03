@@ -11,7 +11,7 @@ def parseData(data: str) -> list[list[str]]:
         reports.append(list(map(int,line.split())))
     return reports
 
-def signum(a) -> int:
+def signum(a: int) -> int:
     if a > 0: return 1
     elif a < 0: return -1
     else: return 0
@@ -30,7 +30,6 @@ def d02p1(data: str) -> int:
         if check_safety(report): safe_report_count += 1
 
     return safe_report_count
-
 
 if __name__ == '__main__':
     data = readDataFile()
