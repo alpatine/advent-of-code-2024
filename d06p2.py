@@ -17,6 +17,25 @@ def find_guard(grid: list[list[str]]) -> tuple[tuple[int, int], tuple[int, int]]
                 case 'v': return (row_index, col_index), (1, 0)
                 case '<': return (row_index, col_index), (0, -1)
 
+def walk_grid(grid: list[list[str]], guard: tuple[tuple[int, int],tuple[int,int]]) -> dict[tuple[int, int], bool]:
+    height = len(grid)
+    width = len(grid[0])
+    visited = defaultdict(bool)
+    pos, direction = guard
+    
+    while True:
+        visited[pos] = True
+        next_pos = (pos[0] + direction[0], pos[1] + direction[1])
+        if 0 <= next_pos[0] < height and 0 <= next_pos[1] < width:
+            if grid[next_pos[0]][next_pos[1]] == '#':
+                # Turn right
+                direction = [direction[1], -direction[0]]
+            else:
+                pos = next_pos
+        else: break
+
+    return visited
+
 def check_loop(grid: list[list[str]], guard: tuple[tuple[int,int],tuple[int,int]]) -> int:
     height = len(grid)
     width = len(grid[0])
@@ -37,18 +56,16 @@ def check_loop(grid: list[list[str]], guard: tuple[tuple[int,int],tuple[int,int]
         else: return False
 
 def check_modified_grids(grid: list[list[str]]) -> int:
-    height = len(grid)
-    width = len(grid[0])
     loop_grid_count = 0
     guard = find_guard(grid)
+    visited = walk_grid(grid, guard)
 
-    for row in range(height):
-        for col in range(width):
-            if grid[row][col] == '.':
-                grid[row][col] = '#'
-                if check_loop(grid, guard):
-                    loop_grid_count += 1
-                grid[row][col] = '.'
+    for row, col in visited.keys():
+        if grid[row][col] == '.':
+            grid[row][col] = '#'
+            if check_loop(grid, guard):
+                loop_grid_count += 1
+            grid[row][col] = '.'
     return loop_grid_count
 
 def d06p2(data: str) -> int:
