@@ -5,7 +5,7 @@ def readDataFile() -> str:
 def parseData(data: str) -> list[str]:
     return list(data.split())
 
-def transform_stones(stones: list[int], cache = {}):
+def transform_stones(stones: list[int], cache = {}) -> list[str]:
     output = []
     for stone in stones:
         stone_int = int(stone)
