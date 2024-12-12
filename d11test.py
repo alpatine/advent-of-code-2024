@@ -6,7 +6,7 @@ from d11p2 import d11p2
 from d11p2 import readDataFile as readP2Data
 
 
-class Day09_Test(TestCase):
+class Day11_Test(TestCase):
     def test_part1_example1(self):
         self.assertEqual(d11p1('0 1 10 99 999', 1), 7)
     
@@ -21,13 +21,13 @@ class Day09_Test(TestCase):
         self.assertEqual(d11p1(data, 25), 183620)
     
     def test_part2_example1(self):
-        self.assertEqual(d11p1('0 1 10 99 999', 1), 7)
+        self.assertEqual(d11p2('0 1 10 99 999', 1), 7)
     
     def test_part2_example2(self):
-        self.assertEqual(d11p1('125 17', 6), 22)
+        self.assertEqual(d11p2('125 17', 6), 22)
     
     def test_part2_example3(self):
-        self.assertEqual(d11p1('125 17', 25), 55312)
+        self.assertEqual(d11p2('125 17', 25), 55312)
     
     def test_part2_solution(self):
         data = readP2Data()
