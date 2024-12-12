@@ -6,7 +6,7 @@ from d10p2 import d10p2
 from d10p2 import readDataFile as readP2Data
 
 
-class Day09_Test(TestCase):
+class Day10_Test(TestCase):
     def test_part1_example(self):
         data = '''89010123
 78121874
