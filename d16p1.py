@@ -23,14 +23,6 @@ def turn_left(d: tuple[int, int]) -> tuple[int, int]:
 
 def turn_right(d: tuple[int, int]) -> tuple[int, int]:
     return d[1], -d[0]
-            
-# def print_grid(grid: list[list[str]]) -> None:
-#     for line in grid:
-#         print(''.join(line))
-
-def get_steps(pos: tuple[int, int], d: tuple[int, int], score: int) -> list[tuple[tuple[int, int], tuple[int, int], int]]:
-    r, c = pos
-    ret = []
 
 def find_lowest_score(grid: list[list[str]]) -> int:
     height = len(grid)
@@ -76,44 +68,6 @@ def d16p1(data: str) -> int:
     return score
     
 if __name__ == '__main__':
-    data = '''###############
-#.......#....E#
-#.#.###.#.###.#
-#.....#.#...#.#
-#.###.#####.#.#
-#.#.#.......#.#
-#.#.#####.###.#
-#...........#.#
-###.#.#####.#.#
-#...#.....#.#.#
-#.#.#.###.#.#.#
-#.....#...#.#.#
-#.###.#.#.#.#.#
-#S..#.....#...#
-###############'''
-    result = d16p1(data)
-    print(result)
-    
-    data = '''#################
-#...#...#...#..E#
-#.#.#.#.#.#.#.#.#
-#.#.#.#...#...#.#
-#.#.#.#.###.#.#.#
-#...#.#.#.....#.#
-#.#.#.#.#.#####.#
-#.#...#.#.#.....#
-#.#.#####.#.###.#
-#.#.#.......#...#
-#.#.###.#####.###
-#.#.#...#.....#.#
-#.#.#.#####.###.#
-#.#.#.........#.#
-#.#.#.#########.#
-#S#.............#
-#################'''
-    result = d16p1(data)
-    print(result)
-    
     data = readDataFile()
     result = d16p1(data)
     print(result)
