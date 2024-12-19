@@ -81,7 +81,7 @@ def compute(a: int, b: int, c: int, code: list[int]) -> int:
     computer.run_code()
     return computer.output
 
-def find_input(b: int, c: int, code: str, target: str):
+def find_input(b: int, c: int, code: str, target: str) -> int:
     required_octets = len(target)
     trial_values = [0] * len(target)
 
