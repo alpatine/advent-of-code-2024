@@ -1,6 +1,3 @@
-from collections import Counter, defaultdict
-
-
 def readDataFile() -> str:
     with open('d20data.txt') as dataFile:
         return dataFile.read()
@@ -9,21 +6,12 @@ def parseData(data: str) -> list[list[str]]:
     grid = [[c for c in line] for line in data.splitlines()]
     return grid
 
-def find_ends(grid: list[list[str]]) -> tuple[tuple[int, int], tuple[int, int]]:
+def find_start(grid: list[list[str]]) -> tuple[tuple[int, int], tuple[int, int]]:
     for row_index, row in enumerate(grid):
         for col_index, col in enumerate(row):
-            match col:
-                case 'S': start = (row_index, col_index)
-                case 'E': end = (row_index, col_index)
-    
-    return start, end
+            if col == 'S': return (row_index, col_index)
 
-def find_path(grid: list[list[str]], start: tuple[int, int], end: tuple[int, int]) -> list[tuple[tuple[int, int], int]]:
-    height = len(grid)
-    width = len(grid[0])
-    sr, sc = start
-    er, ec = end
-
+def find_path(grid: list[list[str]], start: tuple[int, int]) -> list[tuple[tuple[int, int], int]]:
     path = []
     steps = 0
 
@@ -33,7 +21,6 @@ def find_path(grid: list[list[str]], start: tuple[int, int], end: tuple[int, int
     while explore:
         path.append((explore, steps))
         steps += 1
-        
 
         r, c = explore
         visited.add((r, c))
@@ -53,7 +40,6 @@ def find_path(grid: list[list[str]], start: tuple[int, int], end: tuple[int, int
 def find_cheats(grid: list[list[str]], path: list[tuple[tuple[int, int], int]]) -> list[tuple[tuple[int, int], tuple[int, int], int]]:
     height = len(grid)
     width = len(grid[0])
-    step_grid = [[0 for c in range(len(grid[0]))] for r in range(len(grid))]
     step_counts = {(r, c): step_count for (r, c), step_count in path}
     cheats = []
 
@@ -62,14 +48,6 @@ def find_cheats(grid: list[list[str]], path: list[tuple[tuple[int, int], int]]) 
         ((2, 0), (1, 0)),
         ((0, -2), (0, -1)),
         ((-2, 0), (-1, 0)),
-        # ((1, 1), (0, 1)),
-        # ((1, 1), (1, 0)),
-        # ((1, -1), (0, -1)),
-        # ((1, -1), (1, 0)),
-        # ((-1, 1), (0, 1)),
-        # ((-1, 1), (-1, 0)),
-        # ((-1, -1), (0, -1)),
-        # ((-1, -1), (-1, 0)),
     ]
     
     for (r, c), steps in path:
@@ -84,37 +62,21 @@ def find_cheats(grid: list[list[str]], path: list[tuple[tuple[int, int], int]]) 
                         cheats.append(((r, c), (check_r, check_c), check_steps-steps-2))
 
     return cheats
-    ...
 
-def d20p1(data: str) -> str:
+def d20p1(data: str, threshold: int) -> str:
     grid = parseData(data)
-    start, end = find_ends(grid)
-    path = find_path(grid, start, end)
+    start = find_start(grid)
+    path = find_path(grid, start)
     cheats = find_cheats(grid, path)
     
     wanted_cheats = 0
     for _, _, steps in cheats:
-        if steps >= 100:
+        if steps >= threshold:
             wanted_cheats += 1
 
     return wanted_cheats
     
 if __name__ == '__main__':
-    data = '''###############
-#...#...#.....#
-#.#.#.#.#.###.#
-#S#...#.#.#...#
-#######.#.#.###
-#######.#.#...#
-#######.#.###.#
-###..E#...#...#
-###.#######.###
-#...###...#...#
-#.#####.#.###.#
-#.#...#.#.#...#
-#.#.#.#.#.#.###
-#...#...#...###
-###############'''
     data = readDataFile()
-    result = d20p1(data)
+    result = d20p1(data, 100)
     print(result)

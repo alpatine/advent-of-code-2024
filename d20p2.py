@@ -1,4 +1,3 @@
-from collections import Counter, defaultdict
 from itertools import combinations
 
 
@@ -10,21 +9,12 @@ def parseData(data: str) -> list[list[str]]:
     grid = [[c for c in line] for line in data.splitlines()]
     return grid
 
-def find_ends(grid: list[list[str]]) -> tuple[tuple[int, int], tuple[int, int]]:
+def find_start(grid: list[list[str]]) -> tuple[tuple[int, int], tuple[int, int]]:
     for row_index, row in enumerate(grid):
         for col_index, col in enumerate(row):
-            match col:
-                case 'S': start = (row_index, col_index)
-                case 'E': end = (row_index, col_index)
-    
-    return start, end
+            if col == 'S': return (row_index, col_index)
 
-def find_path(grid: list[list[str]], start: tuple[int, int], end: tuple[int, int]) -> list[tuple[tuple[int, int], int]]:
-    height = len(grid)
-    width = len(grid[0])
-    sr, sc = start
-    er, ec = end
-
+def find_path(grid: list[list[str]], start: tuple[int, int]) -> list[tuple[tuple[int, int], int]]:
     path = []
     steps = 0
 
@@ -51,11 +41,7 @@ def find_path(grid: list[list[str]], start: tuple[int, int], end: tuple[int, int
     
     return path
 
-def find_cheats(grid: list[list[str]], path: list[tuple[tuple[int, int], int]]) -> list[tuple[tuple[int, int], tuple[int, int], int]]:
-    height = len(grid)
-    width = len(grid[0])
-    step_grid = [[0 for c in range(len(grid[0]))] for r in range(len(grid))]
-    step_counts = {(r, c): step_count for (r, c), step_count in path}
+def find_cheats(path: list[tuple[tuple[int, int], int]]) -> list[tuple[tuple[int, int], tuple[int, int], int]]:
     cheats = []
 
     for (start, end) in combinations(path, 2):
@@ -65,62 +51,22 @@ def find_cheats(grid: list[list[str]], path: list[tuple[tuple[int, int], int]]) 
         if dist <= 20 and s_steps + dist < e_steps:
             cheats.append(((sr, sc), (er, ec), e_steps - s_steps - dist))
 
-
     return cheats
 
-    deltas = [
-        ((0, 2), (0, 1)),
-        ((2, 0), (1, 0)),
-        ((0, -2), (0, -1)),
-        ((-2, 0), (-1, 0)),
-    ]
-    
-    for (r, c), steps in path:
-        # need to check cells that have manhattan distance of 2 away, and a wall in the way
-        for delta in deltas:
-            (check_dr, check_dc), (wall_dr, wall_dc) = delta
-            check_r, check_c, wall_r, wall_c = r + check_dr, c + check_dc, r + wall_dr, c + wall_dc
-            if 0 <= check_r < height and 0 <= check_c < width:
-                if (check_r, check_c) in step_counts:
-                    check_steps = step_counts[check_r, check_c]
-                    if check_steps > steps and grid[wall_r][wall_c] == '#':
-                        cheats.append(((r, c), (check_r, check_c), check_steps-steps-2))
-
-    return cheats
-    ...
-
-def d20p2(data: str) -> str:
+def d20p2(data: str, threshold: int) -> str:
     grid = parseData(data)
-    start, end = find_ends(grid)
-    path = find_path(grid, start, end)
-    cheats = find_cheats(grid, path)
+    start = find_start(grid)
+    path = find_path(grid, start)
+    cheats = find_cheats(path)
 
-    #cheat_counter = Counter()
     wanted_cheats = 0
     for _, _, steps in cheats:
-        if steps >= 100:
-            #cheat_counter[steps] += 1
+        if steps >= threshold:
             wanted_cheats += 1
 
-    #print(cheat_counter)
     return wanted_cheats
     
 if __name__ == '__main__':
-    data = '''###############
-#...#...#.....#
-#.#.#.#.#.###.#
-#S#...#.#.#...#
-#######.#.#.###
-#######.#.#...#
-#######.#.###.#
-###..E#...#...#
-###.#######.###
-#...###...#...#
-#.#####.#.###.#
-#.#...#.#.#...#
-#.#.#.#.#.#.###
-#...#...#...###
-###############'''
     data = readDataFile()
-    result = d20p2(data)
+    result = d20p2(data, 100)
     print(result)
