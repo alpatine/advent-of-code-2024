@@ -30,16 +30,6 @@ def d19p2(data: str) -> str:
     return possible_count
     
 if __name__ == '__main__':
-    data = '''r, wr, b, g, bwu, rb, gb, br
-
-brwrr
-bggr
-gbbr
-rrbgbr
-ubwu
-bwurrg
-brgr
-bbrgwb'''
     data = readDataFile()
     result = d19p2(data)
     print(result)
