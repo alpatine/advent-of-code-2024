@@ -75,7 +75,7 @@ def parseData(data: str) -> Computer:
     computer.code = list(map(int, code.split(':')[1].strip().split(',')))
     return computer
     
-def compute(a: int, b: int, c: int, code: list[int]) -> int:
+def compute(a: int, b: int, c: int, code: list[int]) -> list[int]:
     computer = Computer()
     computer.A, computer.B, computer.C, computer.code = a, b, c, code
     computer.run_code()
