@@ -1,6 +1,5 @@
-from collections import Counter, defaultdict
-from itertools import combinations, combinations_with_replacement, pairwise, permutations
-import sys
+from itertools import pairwise
+
 
 def readDataFile() -> str:
     with open('d21data.txt') as dataFile:
@@ -40,7 +39,7 @@ def calc_door_paths(start: str, end: str) -> list[str]:
 
     return moves_list
 
-def calc_dpad_path_length(start: str, end: str, robot_count: int, memo = {}) -> list[int]:
+def calc_dpad_path_length(start: str, end: str, robot_count: int, memo = {}) -> int:
     key = (start, end, robot_count)
     if key in memo: return memo[key]
 
@@ -87,7 +86,7 @@ def calc_dpad_path_length(start: str, end: str, robot_count: int, memo = {}) -> 
     memo[key] = ret
     return ret
 
-def calculate_door_paths(door_code: str, robot_count: int) -> list[str]:
+def calculate_door_paths(door_code: str, robot_count: int) -> int:
     door_code_path_length = 0
     for a, b in pairwise('A' + door_code):
         path_list = calc_door_paths(a, b)
@@ -101,7 +100,7 @@ def calculate_door_paths(door_code: str, robot_count: int) -> list[str]:
         door_code_path_length += min(path_lengths)
     return door_code_path_length
 
-def d21p2(data: str, robot_count: int) -> str:
+def d21p2(data: str, robot_count: int) -> int:
     door_codes = parseData(data)
 
     total_complexity = 0
@@ -113,14 +112,6 @@ def d21p2(data: str, robot_count: int) -> str:
     return total_complexity
 
 if __name__ == '__main__':
-    data = '''029A
-980A
-179A
-456A
-379A'''
-    result = d21p2(data, 2)
-    print(result)
-    
     data = readDataFile()
     result = d21p2(data, 25)
     print(result)

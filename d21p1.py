@@ -1,5 +1,5 @@
-from collections import Counter, defaultdict
 import sys
+
 
 class DoorCodeWalker:
     door_code_locations = {
@@ -107,7 +107,7 @@ def readDataFile() -> str:
 def parseData(data: str) -> list[list[str]]:
     return [line for line in data.splitlines()]
 
-def d21p1(data: str) -> str:
+def d21p1(data: str) -> int:
     door_codes = parseData(data)
     total_complexity = 0
     for door_code in door_codes:
@@ -132,25 +132,12 @@ def d21p1(data: str) -> str:
             if l < shortest_len:
                 shortest_len = l
 
-        # dpad1_moves = get_door_code_moves(door_code)
-        # dpad2_moves = get_dpad_moves(dpad1_moves)
-        # dpad3_moves = get_dpad_moves(dpad2_moves)
         complexity = int(door_code[:3]) * shortest_len
         total_complexity += complexity
 
     return total_complexity
 
 if __name__ == '__main__':
-    data = '''029A
-980A
-179A
-456A
-379A'''
-    result = d21p1(data)
-    print(result)
-    
     data = readDataFile()
     result = d21p1(data)
     print(result)
-
-    #258330 is too high
