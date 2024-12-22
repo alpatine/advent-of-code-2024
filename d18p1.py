@@ -1,6 +1,7 @@
-from collections import defaultdict, deque
-from queue import PriorityQueue
 import sys
+from collections import defaultdict
+from queue import PriorityQueue
+
 
 class Cell:
     def __init__(self):
@@ -19,7 +20,7 @@ def readDataFile() -> str:
     with open('d18data.txt') as dataFile:
         return dataFile.read()
 
-def parseData(data: str) -> None:
+def parseData(data: str) -> list[tuple[int, int]]:
     output = []
     for line in data.splitlines():
         x, y = line.split(',')
@@ -38,7 +39,7 @@ def apply_bytes(grid: list[list[str]], bytes: list[tuple[int, int]], byte_count:
 
     return new_grid
 
-def print_path(grid: list[list[str]], cell: Cell):
+def print_path(grid: list[list[str]], cell: Cell) -> None:
     height = len(grid)
     width = len(grid[0])
     new_grid = [[grid[y][x] for x in range(width)] for y in range(height)]
@@ -49,7 +50,6 @@ def print_path(grid: list[list[str]], cell: Cell):
 
     for line in new_grid:
         print(''.join(line))
-
 
 def find_shortest_path(grid: list[list[str]], start: tuple[int, int], end: tuple[int, int]) -> list[tuple[int, int]]:
     height, width = len(grid), len(grid[0])
@@ -102,35 +102,6 @@ def d18p1(data: str, byte_count: int, width: int, height: int) -> str:
     return len(path)-1
     
 if __name__ == '__main__':
-    data = '''5,4
-4,2
-4,5
-3,0
-2,1
-6,3
-2,4
-1,5
-0,6
-3,3
-2,6
-5,1
-1,2
-5,5
-2,5
-6,5
-1,4
-0,4
-6,4
-1,1
-6,1
-1,0
-0,5
-1,6
-2,0'''
-    result = d18p1(data, 12, 7, 7)
-    print(result)
-
-
     data = readDataFile()
     result = d18p1(data, 1024, 71, 71)
     print(result)

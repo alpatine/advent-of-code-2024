@@ -1,6 +1,7 @@
+import sys
 from collections import defaultdict, deque
 from queue import PriorityQueue
-import sys
+
 
 class Cell:
     def __init__(self):
@@ -29,13 +30,9 @@ def parseData(data: str) -> deque[tuple[int, int]]:
 def make_grid(width: int, height: int) -> list[list[str]]:
     return [['.' for x in range(width)] for y in range(height)]
 
-def apply_bytes(grid: list[list[str]], bytes: deque[tuple[int, int]], byte_count: int) -> list[list[str]]:
-    height = len(grid)
-    width = len(grid[0])
+def apply_bytes(grid: list[list[str]], bytes: deque[tuple[int, int]], byte_count: int) -> tuple[list[list[str]], list[tuple[int, int]]]:
     applied = []
-    #new_grid = [[grid[y][x] for x in range(width)] for y in range(height)]
     for _ in range(byte_count):
-        #for x, y in bytes[:byte_count]:
         if bytes:
             x, y = bytes.popleft()
             grid[y][x] = '#'
@@ -43,7 +40,7 @@ def apply_bytes(grid: list[list[str]], bytes: deque[tuple[int, int]], byte_count
 
     return grid, applied
 
-def print_path(grid: list[list[str]], cell: Cell):
+def print_path(grid: list[list[str]], cell: Cell) -> None:
     height = len(grid)
     width = len(grid[0])
     new_grid = [[grid[y][x] for x in range(width)] for y in range(height)]
@@ -55,8 +52,7 @@ def print_path(grid: list[list[str]], cell: Cell):
     for line in new_grid:
         print(''.join(line))
 
-
-def find_shortest_path(grid: list[list[str]], start: tuple[int, int], end: tuple[int, int]) -> list[tuple[int, int]]:
+def find_shortest_path(grid: list[list[str]], start: tuple[int, int], end: tuple[int, int]) -> list[Cell]:
     height, width = len(grid), len(grid[0])
     sx, sy = start[0], start[1]
     ex, ey = end[0], end[1]
@@ -68,14 +64,12 @@ def find_shortest_path(grid: list[list[str]], start: tuple[int, int], end: tuple
 
     front_line: PriorityQueue[tuple[Cell, int]] = PriorityQueue()
     front_line.put((start_cell, 0))
-    visited = defaultdict(bool)
 
     fewest_steps = defaultdict(lambda: sys.maxsize)
 
     while front_line.qsize() > 0:
         cell, steps = front_line.get()
         x, y = cell.x, cell.y
-        visited[x, y] = True
 
         # have we reached the end
         if (x, y) == (ex, ey): break
@@ -100,53 +94,20 @@ def find_shortest_path(grid: list[list[str]], start: tuple[int, int], end: tuple
 
     return path
 
-
-def d18p2(data: str, byte_count: int, width: int, height: int) -> str:
+def d18p2(data: str, byte_count: int, width: int, height: int) -> int:
     byte_positions = parseData(data)
     grid = make_grid(height, width)
     grid, _ = apply_bytes(grid, byte_positions, byte_count)
     path = find_shortest_path(grid, (0, 0), (width-1, height-1))
-    shortest_length = len(path)-1
 
     while byte_positions:
         grid, last_applied = apply_bytes(grid, byte_positions, 1)
         path = find_shortest_path(grid, (0, 0), (width-1, height-1))
         if path is None:
             # it's blocked
-            return last_applied
-    
-    return len(path)-1
+            return last_applied[0]
     
 if __name__ == '__main__':
-    data = '''5,4
-4,2
-4,5
-3,0
-2,1
-6,3
-2,4
-1,5
-0,6
-3,3
-2,6
-5,1
-1,2
-5,5
-2,5
-6,5
-1,4
-0,4
-6,4
-1,1
-6,1
-1,0
-0,5
-1,6
-2,0'''
-    result = d18p2(data, 12, 7, 7)
-    print(result)
-
-
     data = readDataFile()
     result = d18p2(data, 1024, 71, 71)
     print(result)
