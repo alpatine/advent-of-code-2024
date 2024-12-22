@@ -1,11 +1,11 @@
-from collections import Counter, defaultdict
-import sys
+from collections import Counter
+
 
 def readDataFile() -> str:
     with open('d22data.txt') as dataFile:
         return dataFile.read()
 
-def parseData(data: str) -> list[list[str]]:
+def parseData(data: str) -> list[list[int]]:
     return [int(num) for num in data.splitlines()]
 
 def calculate_prices(start: int, steps: int) -> list[tuple[int, int, int, tuple[int, int, int, int]]]:
@@ -24,7 +24,7 @@ def calculate_prices(start: int, steps: int) -> list[tuple[int, int, int, tuple[
         
     return history
 
-def d22p1(data: str, steps: int) -> str:
+def d22p2(data: str, steps: int) -> int:
     initial_numbers = parseData(data)
 
     sequence_counter = Counter()
@@ -39,18 +39,9 @@ def d22p1(data: str, steps: int) -> str:
         sequence_counter.update(buyer_sequences)
 
     most_common_sequence = sequence_counter.most_common()[0]
-    return most_common_sequence
+    return most_common_sequence[1]
 
 if __name__ == '__main__':
-    data = '''1
-2
-3
-2024'''
-    result = d22p1(data, 2000)
-    print(result)
-    
     data = readDataFile()
-    result = d22p1(data, 2000)
+    result = d22p2(data, 2000)
     print(result)
-
-# 1764 too high

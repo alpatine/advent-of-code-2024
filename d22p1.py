@@ -1,11 +1,8 @@
-from collections import Counter, defaultdict
-import sys
-
 def readDataFile() -> str:
     with open('d22data.txt') as dataFile:
         return dataFile.read()
 
-def parseData(data: str) -> list[list[str]]:
+def parseData(data: str) -> list[list[int]]:
     return [int(num) for num in data.splitlines()]
 
 def calculate_secret_number(start: int, steps: int) -> int:
@@ -18,7 +15,7 @@ def calculate_secret_number(start: int, steps: int) -> int:
 
     return n
 
-def d22p1(data: str, steps: int) -> str:
+def d22p1(data: str, steps: int) -> int:
     initial_numbers = parseData(data)
 
     secrets = []
@@ -30,13 +27,6 @@ def d22p1(data: str, steps: int) -> str:
     return sum(secrets)
 
 if __name__ == '__main__':
-    data = '''1
-10
-100
-2024'''
-    result = d22p1(data, 2000)
-    print(result)
-    
     data = readDataFile()
     result = d22p1(data, 2000)
     print(result)
