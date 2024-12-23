@@ -6,7 +6,7 @@ from d21p2 import d21p2
 from d21p2 import readDataFile as readP2Data
 
 
-class Day20_Test(TestCase):
+class Day21_Test(TestCase):
     def test_part1_example(self):
         data = '''029A
 980A
